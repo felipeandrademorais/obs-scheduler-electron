@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function Start() {
   const [dados, setDados] = useState({
-    nome: '',
-    email: '',
+    time: '',
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setDados({
       ...dados,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     try {
-      const resposta = await axios.post('SUA_URL_DA_API', dados);
+      const resposta = await axios.post('http://localhost:3000/start', dados);
       console.log('Resposta da API:', resposta.data);
     } catch (erro) {
       console.error('Erro ao enviar requisição para a API:', erro);
@@ -26,28 +26,20 @@ function Start() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Nome:
+    <form className="form" onSubmit={handleSubmit}>
+      <div>
+        <label> Hora para iniciar </label>
         <input
-          type="text"
-          name="nome"
-          value={dados.nome}
+          type="time"
+          name="time"
+          value={dados.time}
           onChange={handleChange}
         />
-      </label>
-      <br />
-      <label>
-        Email:
-        <input
-          type="email"
-          name="email"
-          value={dados.email}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <button type="submit">Enviar</button>
+      </div>
+      <div>
+        <button type="submit">Enviar</button>
+        <Link to="/"> Cancelar </Link>
+      </div>
     </form>
   );
 }
