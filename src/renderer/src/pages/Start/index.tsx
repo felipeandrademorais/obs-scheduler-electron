@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Start() {
   const [dados, setDados] = useState({
     time: '',
   });
+  const navigate = useNavigate();
 
   const handleChange = (e: any) => {
     setDados({
@@ -19,7 +20,9 @@ function Start() {
 
     try {
       const resposta = await axios.post('http://localhost:3000/start', dados);
-      console.log('Resposta da API:', resposta.data);
+      if (resposta.status === 200) {
+        navigate(-1);
+      }
     } catch (erro) {
       console.error('Erro ao enviar requisição para a API:', erro);
     }
